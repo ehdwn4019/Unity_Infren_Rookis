@@ -1,0 +1,11 @@
+C:\Users\HOME\Desktop\Inflearn_Study\Algorithm\Algorithm\bin\Debug\netcoreapp2.1\Algorithm.deps.json
+C:\Users\HOME\Desktop\Inflearn_Study\Algorithm\Algorithm\bin\Debug\netcoreapp2.1\Algorithm.runtimeconfig.json
+C:\Users\HOME\Desktop\Inflearn_Study\Algorithm\Algorithm\bin\Debug\netcoreapp2.1\Algorithm.runtimeconfig.dev.json
+C:\Users\HOME\Desktop\Inflearn_Study\Algorithm\Algorithm\bin\Debug\netcoreapp2.1\Algorithm.dll
+C:\Users\HOME\Desktop\Inflearn_Study\Algorithm\Algorithm\bin\Debug\netcoreapp2.1\Algorithm.pdb
+C:\Users\HOME\Desktop\Inflearn_Study\Algorithm\Algorithm\obj\Debug\netcoreapp2.1\Algorithm.csprojAssemblyReference.cache
+C:\Users\HOME\Desktop\Inflearn_Study\Algorithm\Algorithm\obj\Debug\netcoreapp2.1\Algorithm.csproj.CoreCompileInputs.cache
+C:\Users\HOME\Desktop\Inflearn_Study\Algorithm\Algorithm\obj\Debug\netcoreapp2.1\Algorithm.AssemblyInfoInputs.cache
+C:\Users\HOME\Desktop\Inflearn_Study\Algorithm\Algorithm\obj\Debug\netcoreapp2.1\Algorithm.AssemblyInfo.cs
+C:\Users\HOME\Desktop\Inflearn_Study\Algorithm\Algorithm\obj\Debug\netcoreapp2.1\Algorithm.dll
+C:\Users\HOME\Desktop\Inflearn_Study\Algorithm\Algorithm\obj\Debug\netcoreapp2.1\Algorithm.pdb
