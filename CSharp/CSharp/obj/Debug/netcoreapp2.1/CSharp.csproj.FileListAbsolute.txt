@@ -1,0 +1,11 @@
+C:\Users\HOME\Desktop\Inflearn_Part1\CSharp\CSharp\bin\Debug\netcoreapp2.1\CSharp.deps.json
+C:\Users\HOME\Desktop\Inflearn_Part1\CSharp\CSharp\bin\Debug\netcoreapp2.1\CSharp.runtimeconfig.json
+C:\Users\HOME\Desktop\Inflearn_Part1\CSharp\CSharp\bin\Debug\netcoreapp2.1\CSharp.runtimeconfig.dev.json
+C:\Users\HOME\Desktop\Inflearn_Part1\CSharp\CSharp\bin\Debug\netcoreapp2.1\CSharp.dll
+C:\Users\HOME\Desktop\Inflearn_Part1\CSharp\CSharp\bin\Debug\netcoreapp2.1\CSharp.pdb
+C:\Users\HOME\Desktop\Inflearn_Part1\CSharp\CSharp\obj\Debug\netcoreapp2.1\CSharp.csprojAssemblyReference.cache
+C:\Users\HOME\Desktop\Inflearn_Part1\CSharp\CSharp\obj\Debug\netcoreapp2.1\CSharp.csproj.CoreCompileInputs.cache
+C:\Users\HOME\Desktop\Inflearn_Part1\CSharp\CSharp\obj\Debug\netcoreapp2.1\CSharp.AssemblyInfoInputs.cache
+C:\Users\HOME\Desktop\Inflearn_Part1\CSharp\CSharp\obj\Debug\netcoreapp2.1\CSharp.AssemblyInfo.cs
+C:\Users\HOME\Desktop\Inflearn_Part1\CSharp\CSharp\obj\Debug\netcoreapp2.1\CSharp.dll
+C:\Users\HOME\Desktop\Inflearn_Part1\CSharp\CSharp\obj\Debug\netcoreapp2.1\CSharp.pdb
