@@ -4,3 +4,4 @@ C:\Users\USER\Desktop\Unity_Infren_Rookis\GameServer\Server\ServerCore\bin\Relea
 C:\Users\USER\Desktop\Unity_Infren_Rookis\GameServer\Server\ServerCore\obj\Release\ServerCore.csproj.CoreCompileInputs.cache
 C:\Users\USER\Desktop\Unity_Infren_Rookis\GameServer\Server\ServerCore\obj\Release\ServerCore.exe
 C:\Users\USER\Desktop\Unity_Infren_Rookis\GameServer\Server\ServerCore\obj\Release\ServerCore.pdb
+C:\Users\USER\Desktop\Unity_Infren_Rookis\GameServer\Server\ServerCore\obj\Release\ServerCore.csproj.AssemblyReference.cache

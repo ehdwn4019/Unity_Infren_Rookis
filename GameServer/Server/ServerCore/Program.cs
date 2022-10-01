@@ -7,17 +7,62 @@ using System.Threading;
 
 namespace ServerCore
 {
+    class SessionManager
+    {
+        static object _lock = new object();
+
+        public static void TestSession()
+        {
+            lock(_lock)
+            {
+
+            }
+        }
+
+        public static void Test()
+        {
+            lock(_lock)
+            {
+                UserManager.TestUser();
+            }
+        }
+    }
+
+    class UserManager
+    {
+        static object _lock = new object();
+
+        public static void Test()
+        {
+            lock(_lock)
+            {
+                SessionManager.TestSession();
+            }
+        }
+
+        public static void TestUser()
+        {
+            lock(_lock)
+            {
+
+            }
+        }
+    }
+
     class Program
     {
+
+        #region 쓰레드 생성 
         static void MainThread(Object state)
         {
             for(int i=0; i<5; i++)
                 Console.WriteLine("Hello Thread!");
         }
 
+        #endregion
 
 
-
+        #region 메모리 배리어 
         volatile static bool _stop = false; // 릴리즈모드로 실행시 어셈블리단에서 코드를 자동 최적화 시켜주는데 이걸 방지하는 키워드가 volatile이다. C++과 C#에서 작동 방식이 다르다.
                                             // C#에서는 권장하지 않음
 
@@ -57,6 +102,71 @@ namespace ServerCore
 
             r2 = y;
         }
+        #endregion
+
+        #region Interlocked, lock
+        //static volatile int number = 0;
+        static int number = 0;
+        static object obj = new object();
+
+        static void Thread1()
+        {
+            for(int i=0; i<10000000; i++)
+            {
+                //Interlocked.Increment(ref number); //변수의 원자성 보존, 성능에 문재 존재, 내부에서 메모리 배리어 사용하기 때문에 volatile 필요성이 없어짐 
+
+                //lock과 같은 느낌, C++에서는 CriticalSection 또는 Std::Mutex 
+                //Monitor.Enter(obj);
+                //
+                //number++;
+                //
+                //Monitor.Exit(obj); // Exit 처리가 안된다면 데드락인 상황 
+
+                //try catch finally로도 가능, 예상치 못한 익셉션의 경우에 
+                //try
+                //{
+                //    Monitor.Enter(obj);
+                //    number++;
+                //
+                //    return;
+                //}
+                //finally
+                //{
+                //    Monitor.Exit(obj); 
+                //}
+
+                //보통은 lock 사용, 내부는 Monitor로 구현되있음 
+                //lock(obj)
+                //{
+                //    number++;
+                //}
+
+                SessionManager.Test();
+            }
+        }
+
+        static void Thread2()
+        {
+            for (int i = 0; i < 10000000; i++)
+            {
+                //Interlocked.Decrement(ref number); //변수의 원자성 보존, 성능에 문재 존재 
+
+                //Monitor.Enter(obj);
+                //
+                //number--;
+                //
+                //Monitor.Exit(obj);
+                //
+                //lock(obj)
+                //{
+                //    number++;
+                //}
+
+                UserManager.Test();
+            }
+        }
+
+        #endregion
 
         static void Main(string[] args)
         {
@@ -102,25 +212,25 @@ namespace ServerCore
 
             #region 메모리 배리어 
 
-            int count = 0;
-
-            while(true)
-            {
-                count++;
-                x = y = r1 = r2 = 0;
-
-                Task t1 = new Task(Thread_1);
-                Task t2 = new Task(Thread_2);
-                t1.Start();
-                t2.Start();
-
-                Task.WaitAll(t1, t2);
-
-                if (r1 == 0 && r2 == 0)
-                    break;
-            }
-
-            Console.WriteLine($"{count}번만에 빠져나옴!");
+            //int count = 0;
+            //
+            //while(true)
+            //{
+            //    count++;
+            //    x = y = r1 = r2 = 0;
+            //
+            //    Task t1 = new Task(Thread_1);
+            //    Task t2 = new Task(Thread_2);
+            //    t1.Start();
+            //    t2.Start();
+            //
+            //    Task.WaitAll(t1, t2);
+            //
+            //    if (r1 == 0 && r2 == 0)
+            //        break;
+            //}
+            //
+            //Console.WriteLine($"{count}번만에 빠져나옴!");
             // r1 이랑 r2 가 0이되는 경우는 없어야 하는데 로직상으로는.. 멀티쓰레드에서는 그렇지 않기 때문에 메모리 배리어를 사용 ?
 
             //메모리 배리어 
@@ -130,6 +240,17 @@ namespace ServerCore
             //Full Memory Barrier >> store , load 둘다 막는다.  >> 대부분 이거 사용 
             //Store Memory Barrier >> store 만 막는다. >> 이런게 있다 정도만 
             //Load Memory Barrier >> load 만 막는다. >> 이런게 있다 정도만 
+            #endregion
+
+            #region Interlocked, lock
+            Task t1 = new Task(Thread1);
+            Task t2 = new Task(Thread2);
+            t1.Start();
+            t2.Start();
+
+            Task.WaitAll(t1, t2);
+
+            Console.WriteLine(number);
             #endregion
 
         }
