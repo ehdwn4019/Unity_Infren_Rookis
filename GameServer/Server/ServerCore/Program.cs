@@ -50,54 +50,54 @@ namespace ServerCore
     }
 
     //SpinLock 구현하기 
-    class SpinLock
-    {
-        volatile int _locked = 0;
+    //class SpinLock
+    //{
+    //    volatile int _locked = 0;
+    //
+    //    public void Acquire()
+    //    {
+    //        while(true)
+    //        {
+    //            //EXCHANGE
+    //            //int original = Interlocked.Exchange(ref _locked, 1); // 원래의 값을 반환, 1이 된다면 이미 다른 스레드가 접근했다는 의미 
+    //            //if (original == 0)
+    //            //    break;
+    //
+    //            //COMPAREEXCHANGE
+    //            int expected = 0;
+    //            int desired = 1;
+    //            int original = Interlocked.CompareExchange(ref _locked, desired, expected); // 원래의 값을 반환, ref의 값과 expected의 값이 같다면 desired값을 넣어준다 
+    //            if (original == 0)
+    //                break;
+    //        }
+    //        
+    //
+    //    }
+    //
+    //    public void Release()
+    //    {
+    //        _locked = 0;
+    //    }
+    //}
 
-        public void Acquire()
-        {
-            while(true)
-            {
-                //EXCHANGE
-                //int original = Interlocked.Exchange(ref _locked, 1); // 원래의 값을 반환, 1이 된다면 이미 다른 스레드가 접근했다는 의미 
-                //if (original == 0)
-                //    break;
-
-                //COMPAREEXCHANGE
-                int expected = 0;
-                int desired = 1;
-                int original = Interlocked.CompareExchange(ref _locked, desired, expected); // 원래의 값을 반환, ref의 값과 expected의 값이 같다면 desired값을 넣어준다 
-                if (original == 0)
-                    break;
-            }
-            
-
-        }
-
-        public void Release()
-        {
-            _locked = 0;
-        }
-    }
-
-    class Lock
-    {
-        AutoResetEvent _available = new AutoResetEvent(true); //true, false에 따라서 문이 열린상태 또는 닫힌 상태로 결정 // 자동문 같은 개념  
-
-        ManualResetEvent _avilable_ver2 = new ManualResetEvent(true);// 수동문 같은개념 
-
-        public void Acquire()
-        {
-            _available.WaitOne(); // 입장 시도 
-
-            _avilable_ver2.Reset(); // 문을 직접 닫아줌, 수동문 이기 때문, lock 구현시에는 ManualResetEvent이 아닌 AutoResetEvent 사용 
-        }
-
-        public void Release()
-        {
-            _available.Set();
-        }
-    }
+    //class Lock
+    //{
+    //    AutoResetEvent _available = new AutoResetEvent(true); //true, false에 따라서 문이 열린상태 또는 닫힌 상태로 결정 // 자동문 같은 개념  
+    //
+    //    ManualResetEvent _avilable_ver2 = new ManualResetEvent(true);// 수동문 같은개념 
+    //
+    //    public void Acquire()
+    //    {
+    //        _available.WaitOne(); // 입장 시도 
+    //
+    //        _avilable_ver2.Reset(); // 문을 직접 닫아줌, 수동문 이기 때문, lock 구현시에는 ManualResetEvent이 아닌 AutoResetEvent 사용 
+    //    }
+    //
+    //    public void Release()
+    //    {
+    //        _available.Set();
+    //    }
+    //}
 
     class Program
     {
@@ -218,38 +218,75 @@ namespace ServerCore
 
         #endregion
 
-        static int _num = 0;
-        static SpinLock _spinLock = new SpinLock();
-        static Lock _lock = new Lock();
-        static Mutex _mutex = new Mutex(); //AutoResetEvent와 사용법 비슷, 커널 쪽 까지 가기 때문에 좀 느리다, 좀더 많은 정보를 가짐 
+        //spinlock은 기본적으로 구현되어있음 
+        #region spinlock
 
-        static void Thread_1_1()
+        //static int _num = 0;
+        //static SpinLock _spinLock = new SpinLock();
+        //static Lock _lock = new Lock();
+        //static Mutex _mutex = new Mutex(); //AutoResetEvent와 사용법 비슷, 커널 쪽 까지 가기 때문에 좀 느리다, 좀더 많은 정보를 가짐 
+
+        //static void Thread_1_1()
+        //{
+        //    for(int i=0; i<100000; i++)
+        //    {
+        //        _spinLock.Acquire();
+        //        _num++;
+        //        _spinLock.Release();
+        //
+        //
+        //        _mutex.WaitOne();
+        //        _num++;
+        //        _mutex.ReleaseMutex();
+        //    }
+        //}
+        //
+        //static void Thread_2_1()
+        //{
+        //    for(int i=0; i<100000; i++)
+        //    {
+        //        _spinLock.Acquire();
+        //        _num--;
+        //        _spinLock.Release();
+        //
+        //        _mutex.WaitOne();
+        //        _num--;
+        //        _mutex.ReleaseMutex();
+        //    }
+        //}
+
+
+
+        //static object _lock = new object();
+        //static SpinLock _lock2 = new SpinLock();
+        //static Mutex _lock3 = new Mutex();
+
+        #endregion
+
+        static object _lock = new object();
+
+        class Reward
         {
-            for(int i=0; i<100000; i++)
-            {
-                _spinLock.Acquire();
-                _num++;
-                _spinLock.Release();
 
-
-                _mutex.WaitOne();
-                _num++;
-                _mutex.ReleaseMutex();
-            }
         }
 
-        static void Thread_2_1()
-        {
-            for(int i=0; i<100000; i++)
-            {
-                _spinLock.Acquire();
-                _num--;
-                _spinLock.Release();
+        //ReaderWriterLock 보다 최신버전 >> ReaderWriterLockSlim
+        static ReaderWriterLockSlim _lock3 = new ReaderWriterLockSlim(); 
 
-                _mutex.WaitOne();
-                _num--;
-                _mutex.ReleaseMutex();
-            }
+        static Reward GetRewardById(int id)
+        {
+            _lock3.EnterReadLock();
+
+            _lock3.ExitReadLock();
+
+            return null;
+        }
+
+        static void AddReward(Reward reward)
+        {
+            _lock3.EnterWriteLock();
+
+            _lock3.ExitWriteLock();
         }
 
         static void Main(string[] args)
@@ -292,7 +329,6 @@ namespace ServerCore
             //t1.Wait(); // >> thread의 join과 같은 함수 
             //Console.WriteLine("종료 성공");
             #endregion
-
 
             #region 메모리 배리어 
 
@@ -337,15 +373,37 @@ namespace ServerCore
             //Console.WriteLine(number);
             #endregion
 
-            Task t1 = new Task(Thread_1_1);
-            Task t2 = new Task(Thread_2_1);
+            #region spinlock
+            //Task t1 = new Task(Thread_1_1);
+            //Task t2 = new Task(Thread_2_1);
+            //
+            //t1.Start();
+            //t2.Start();
+            //
+            //Task.WaitAll(t1, t2);
+            //
+            //Console.WriteLine(_num);
 
-            t1.Start();
-            t2.Start();
 
-            Task.WaitAll(t1, t2);
 
-            Console.WriteLine(_num);
+            //lock (_lock)
+            //{
+            //
+            //}
+            //
+            //bool lockTaken = false;
+            //
+            //try
+            //{
+            //    _lock2.Enter(ref lockTaken);
+            //}
+            //finally
+            //{
+            //    if (lockTaken)
+            //        _lock2.Exit();
+            //}
+
+            #endregion
         }
     }
 }
