@@ -289,6 +289,24 @@ namespace ServerCore
             _lock3.ExitWriteLock();
         }
 
+        #region TLS 
+        // 전역 변수이나 스레드 마다 고유한 공간을 보유, 전역 변수를 지역변수처럼 사용?
+        static ThreadLocal<string> ThreadName = new ThreadLocal<string>(()=> { return $"My Name Is {Thread.CurrentThread.ManagedThreadId}"; }); 
+
+        static void WhoAmI()
+        {
+            bool repeat = ThreadName.IsValueCreated;
+            if(repeat)
+                Console.WriteLine(ThreadName.Value+"(repeat)");
+            else
+                Console.WriteLine(ThreadName.Value);
+        }
+        #endregion
+
+
+        static volatile int count = 0;
+        static Lock _lock2 = new Lock();
+
         static void Main(string[] args)
         {
             #region 쓰레드 생성
@@ -403,6 +421,42 @@ namespace ServerCore
             //        _lock2.Exit();
             //}
 
+            #endregion
+
+            Task t1 = new Task(delegate ()
+            {
+                for(int i=0; i<100000; i++)
+                {
+                    _lock2.WriteLock();
+                    count++;
+                    _lock2.WriteUnlock();
+                }
+            });
+
+            Task t2 = new Task(delegate ()
+            {
+                for(int i=0; i< 100000; i++)
+                {
+                    _lock2.WriteLock();
+                    count--;
+                    _lock2.WriteUnlock();
+                }
+            });
+
+            t1.Start();
+            t2.Start();
+
+            Task.WaitAll(t1, t2);
+
+            Console.WriteLine(count);
+
+            #region TLS 
+
+            ThreadPool.SetMinThreads(1, 1);
+            ThreadPool.SetMaxThreads(3, 3);
+            Parallel.Invoke(WhoAmI, WhoAmI, WhoAmI, WhoAmI, WhoAmI, WhoAmI, WhoAmI);
+
+            ThreadName.Dispose();
             #endregion
         }
     }
