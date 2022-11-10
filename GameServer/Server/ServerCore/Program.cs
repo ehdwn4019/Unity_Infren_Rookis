@@ -4,6 +4,8 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Threading;
+using System.Net.Sockets;
+using System.Net;
 
 namespace ServerCore
 {
@@ -307,6 +309,34 @@ namespace ServerCore
         static volatile int count = 0;
         static Lock _lock2 = new Lock();
 
+        #region 소켓 프로그래밍 
+        static Listener _listener = new Listener();
+        static void OnAcceptHandler(Socket clientSocket)
+        {
+            try
+            {
+                //받고
+                byte[] recvBuff = new byte[1024];
+                int recvBytes = clientSocket.Receive(recvBuff);
+                string recvData = Encoding.UTF8.GetString(recvBuff, 0, recvBytes);
+                Console.WriteLine($"[From Client] {recvData}");
+
+                //전송
+                byte[] sendBuff = Encoding.UTF8.GetBytes("Welcome to MMORPG Server !");
+                clientSocket.Send(sendBuff);
+
+                //추방 
+                clientSocket.Shutdown(SocketShutdown.Both);
+                clientSocket.Close();
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e);
+            }
+        }
+
+        #endregion
+
         static void Main(string[] args)
         {
             #region 쓰레드 생성
@@ -457,6 +487,24 @@ namespace ServerCore
             Parallel.Invoke(WhoAmI, WhoAmI, WhoAmI, WhoAmI, WhoAmI, WhoAmI, WhoAmI);
 
             ThreadName.Dispose();
+            #endregion
+
+            #region 소켓 프로그래밍
+
+            // DNS >> Domain Name System 
+            // www.kdj.com >> 도메인 등록, IP가 아닌 string 값으로 관리, IP를 적어넣으면 하드코딩 
+
+            string host = Dns.GetHostName();
+            IPHostEntry ipHost =  Dns.GetHostEntry(host);
+            IPAddress ipAddr = ipHost.AddressList[0]; // google 같이 많이 접속하는 사이트는 여러개의 IP를 가지고 있다. 그래서 list로 받음 
+            IPEndPoint endPoint = new IPEndPoint(ipAddr, 7777);
+
+            _listener.Init(endPoint, OnAcceptHandler);
+
+            while (true)
+            {
+                //임시로 서버 계속 실행시키기 위한 무한루프 
+            }
             #endregion
         }
     }
