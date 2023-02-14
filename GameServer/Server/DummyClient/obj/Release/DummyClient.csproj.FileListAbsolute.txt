@@ -5,3 +5,7 @@ C:\Users\USER\Desktop\Unity_Infren_Rookis\GameServer\Server\DummyClient\obj\Rele
 C:\Users\USER\Desktop\Unity_Infren_Rookis\GameServer\Server\DummyClient\obj\Release\DummyClient.csproj.CoreCompileInputs.cache
 C:\Users\USER\Desktop\Unity_Infren_Rookis\GameServer\Server\DummyClient\obj\Release\DummyClient.exe
 C:\Users\USER\Desktop\Unity_Infren_Rookis\GameServer\Server\DummyClient\obj\Release\DummyClient.pdb
+C:\Users\USER\Desktop\Unity_Infren_Rookis\GameServer\Server\DummyClient\bin\Release\ServerCore.dll
+C:\Users\USER\Desktop\Unity_Infren_Rookis\GameServer\Server\DummyClient\bin\Release\ServerCore.pdb
+C:\Users\USER\Desktop\Unity_Infren_Rookis\GameServer\Server\DummyClient\bin\Release\ServerCore.dll.config
+C:\Users\USER\Desktop\Unity_Infren_Rookis\GameServer\Server\DummyClient\obj\Release\DummyClient.csproj.CopyComplete

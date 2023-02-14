@@ -101,36 +101,6 @@ namespace ServerCore
     //    }
     //}
 
-    class GameSession : Session
-    {
-        public override void OnConnected(EndPoint endPoint)
-        {
-            Console.WriteLine($"OnConnected : {endPoint}");
-
-            byte[] sendBuff = Encoding.UTF8.GetBytes("Welcome to MMORPG Server !");
-            Send(sendBuff);
-
-            Thread.Sleep(1000);
-            Disconnect();
-        }
-
-        public override void OnDisconnected(EndPoint endPoint)
-        {
-            Console.WriteLine($"OnDisconnected : {endPoint}");
-        }
-
-        public override void OnRecv(ArraySegment<byte> buffer)
-        {
-            string recvData = Encoding.UTF8.GetString(buffer.Array, buffer.Offset, buffer.Count);
-            Console.WriteLine($"[From Client] {recvData}");
-        }
-
-        public override void OnSend(int numOfBytes)
-        {
-            Console.WriteLine($"Transferred bytes: {numOfBytes}");
-        }
-    }
-
     class Program
     {
 
@@ -339,9 +309,7 @@ namespace ServerCore
         static volatile int count = 0;
         static Lock _lock2 = new Lock();
 
-        #region 소켓 프로그래밍 
-        static Listener _listener = new Listener();
-        #endregion
+        
 
         static void Main(string[] args)
         {
@@ -493,24 +461,6 @@ namespace ServerCore
             Parallel.Invoke(WhoAmI, WhoAmI, WhoAmI, WhoAmI, WhoAmI, WhoAmI, WhoAmI);
 
             ThreadName.Dispose();
-            #endregion
-
-            #region 소켓 프로그래밍
-
-            // DNS >> Domain Name System 
-            // www.kdj.com >> 도메인 등록, IP가 아닌 string 값으로 관리, IP를 적어넣으면 하드코딩 
-
-            string host = Dns.GetHostName();
-            IPHostEntry ipHost =  Dns.GetHostEntry(host);
-            IPAddress ipAddr = ipHost.AddressList[0]; // google 같이 많이 접속하는 사이트는 여러개의 IP를 가지고 있다. 그래서 list로 받음 
-            IPEndPoint endPoint = new IPEndPoint(ipAddr, 7777);
-
-            _listener.Init(endPoint, ()=> { return new GameSession(); });
-
-            while (true)
-            {
-                //임시로 서버 계속 실행시키기 위한 무한루프 
-            }
             #endregion
         }
     }
