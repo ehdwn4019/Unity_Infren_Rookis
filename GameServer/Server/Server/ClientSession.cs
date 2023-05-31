@@ -10,22 +10,88 @@ using ServerCore;
 
 namespace Server
 {
-    class Packet
+    public abstract class Packet
     {
         public ushort size;
         public ushort packetID;
+
+        public abstract ArraySegment<byte> Write();
+        public abstract void Read(ArraySegment<byte> s);
     }
 
     class PlayerInfoReq : Packet
     {
         public long playerId;
+
+        public PlayerInfoReq()
+        {
+            this.packetID = (ushort)PacketID.PlayerInfoReq;
+        }
+
+        public override void Read(ArraySegment<byte> s)
+        {
+            ushort count = 0;
+
+            //ushort size = BitConverter.ToUInt16(s.Array, s.Offset);
+            count += 2;
+            //ushort id = BitConverter.ToUInt16(s.Array, s.Offset + count);
+            count += 2;
+            this.playerId = BitConverter.ToInt64(s.Array, s.Offset + count);
+            count += 8;
+        }
+
+        public override ArraySegment<byte> Write()
+        {
+            ArraySegment<byte> s = SendBufferHelper.Open(4096);
+
+            //현재 버전에서 지원불가?, GetBytes의 최적화 버전
+            //ushort count = 0;
+            //bool success = true;
+
+            //count += 2;
+            //success &= BitConverter.TryWriteBytes(new Span(s.Array, s.Offset + count, s.Count - count), packet.packetID);
+            //count += 2;
+            //success &= BitConverter.TryWriteBytes(new Span(s.Array, s.Offset + count, s.Count - count), packet.size);
+            //count += 8;
+            //success &= BitConverter.TryWriteBytes(new Span(s.Array, s.Offset, s.Count), packet.size);
+            //count += 2;
+
+            //if(success == false)
+            //    return null;
+
+            //return SendBufferHelper.Close(count);
+            //
+
+
+            //패킷사이즈는 밑으로 
+
+            byte[] packetId = BitConverter.GetBytes(this.packetID);
+            byte[] playerId = BitConverter.GetBytes(this.playerId);
+
+            ushort count = 0;
+
+
+
+            Array.Copy(packetId, 0, s.Array, s.Offset + count, 2);
+            count += 2;
+            Array.Copy(playerId, 0, s.Array, s.Offset + count, 8);
+            count += 8;
+
+            count += 2;
+            byte[] size = BitConverter.GetBytes(count);
+            Array.Copy(size, 0, s.Array, s.Offset + count, 2);
+
+
+
+            return SendBufferHelper.Close(count);
+        }
     }
 
-    class PlayerInfoOK : Packet
-    {
-        public int hp;
-        public int attack;
-    }
+    //class PlayerInfoOK : Packet
+    //{
+    //    public int hp;
+    //    public int attack;
+    //}
 
     public enum PacketID
     {
@@ -66,9 +132,9 @@ namespace Server
             {
                 case PacketID.PlayerInfoReq:
                     {
-                        long playerID = BitConverter.ToInt64(buffer.Array, buffer.Offset + count);
-                        count += 8;
-                        Console.WriteLine($"PlayerInfoReq : {playerID}");
+                        PlayerInfoReq p = new PlayerInfoReq();
+                        p.Read(buffer);
+                        Console.WriteLine($"PlayerInfoReq : {p.playerId}");
                     }
                     break;
                 case PacketID.PlayerInfoOK:
