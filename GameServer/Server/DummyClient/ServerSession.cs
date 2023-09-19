@@ -13,16 +13,7 @@ using System.Runtime.InteropServices;
 
 namespace DummyClient
 {
-    public abstract class Packet
-    {
-        public ushort size;
-        public ushort packetID;
-
-        public abstract ArraySegment<byte> Write();
-        public abstract void Read(ArraySegment<byte> s);
-    }
-
-    class PlayerInfoReq : Packet
+    class PlayerInfoReq
     {
         public long playerId;
         public string name;
@@ -60,12 +51,7 @@ namespace DummyClient
 
         public List<SkillInfo> skills = new List<SkillInfo>();
 
-        public PlayerInfoReq()
-        {
-            this.packetID = (ushort)PacketID.PlayerInfoReq;
-        }
-
-        public override void Read(ArraySegment<byte> segment)
+        public void Read(ArraySegment<byte> segment)
         {
             ushort count = 0;
 
@@ -94,13 +80,15 @@ namespace DummyClient
             //}
         }
 
-        public override ArraySegment<byte> Write()
+        public ArraySegment<byte> Write()
         {
             ArraySegment<byte> segment = SendBufferHelper.Open(4096);
 
             //현재 버전에서 지원불가?, GetBytes의 최적화 버전
             //ushort count = 0;
             //bool success = true;
+
+            //Span<byte> s = new Span<byte>(segment.Array, segment.Offset, segment.Count);
 
             //count += sizeof(ushort);
             //success &= BitConverter.TryWriteBytes(s.Slice(count, s.Length - count), packet.packetID);
@@ -141,14 +129,14 @@ namespace DummyClient
 
             //패킷사이즈는 밑으로 
 
-            byte[] packetId = BitConverter.GetBytes(this.packetID);
+            //byte[] packetId = BitConverter.GetBytes(SkillInfo.);
             byte[] playerId = BitConverter.GetBytes(this.playerId);
 
             ushort count = 0;
 
 
 
-            Array.Copy(packetId, 0, segment.Array, segment.Offset + count, 2);
+            //Array.Copy(packetId, 0, segment.Array, segment.Offset + count, 2);
             count += 2;
             Array.Copy(playerId, 0, segment.Array, segment.Offset + count, 8);
             count += 8;
