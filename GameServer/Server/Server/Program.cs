@@ -7,6 +7,7 @@ using System.Threading;
 using System.Net.Sockets;
 using System.Net;
 using ServerCore;
+using Server.Packet;
 
 namespace Server
 {
@@ -43,6 +44,8 @@ namespace Server
 
             // DNS >> Domain Name System 
             // www.kdj.com >> 도메인 등록, IP가 아닌 string 값으로 관리, IP를 적어넣으면 하드코딩 
+
+            ServerPacketManager.Instance.Register();
 
             string host = Dns.GetHostName();
             IPHostEntry ipHost = Dns.GetHostEntry(host);

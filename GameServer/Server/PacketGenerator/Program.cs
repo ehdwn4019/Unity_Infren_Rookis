@@ -14,15 +14,25 @@ namespace PacketGenerator
         static ushort packetId;
         static string packetEnums;
 
+        //PDL 파일에 패킷 생성시 아래처럼 각각 사용하는 패킷을 분리해서 적용시키는게 좋다. 
+        //S_ : 서버에서 클라로만 보내는 패킷 
+        //C_ : 클라에서 서버로만 보내는 패킷
+        static string clientRegister;
+        static string serverRegister;
+
         static void Main(string[] args)
         {
+            
+
+            string pdlPath = "../PDL.xml";
+
             XmlReaderSettings settings = new XmlReaderSettings() // 실행파일 경로로 읽음, exe파일이 있는곳 
             {
                 IgnoreComments = true,
                 IgnoreWhitespace = true
             };
 
-            using (XmlReader r = XmlReader.Create("PDL.xml", settings))
+            using (XmlReader r = XmlReader.Create(pdlPath, settings))
             {
                 r.MoveToContent(); // 바로 태그 컨텐트로 이동 
                 
@@ -36,6 +46,10 @@ namespace PacketGenerator
 
                 string fileText = string.Format(PacketFormat.fileFormat, packetEnums, genPackets);
                 File.WriteAllText("GenPackets.cs", fileText);
+                string clientManagerText = string.Format(PacketFormat.managerFormat, clientRegister);
+                File.WriteAllText("ClientPacketManager.cs", clientManagerText);
+                string serverManagerText = string.Format(PacketFormat.managerFormat, serverRegister);
+                File.WriteAllText("ServerPacketManager.cs", serverManagerText);
             }
         }
 
@@ -61,6 +75,10 @@ namespace PacketGenerator
 
             genPackets += string.Format(PacketFormat.packetFormat, packetName, t.Item1, t.Item2, t.Item3);
             packetEnums += string.Format(PacketFormat.packetEnumFormat, packetName, ++packetId) + Environment.NewLine + "\t";
+            if (packetName.StartsWith("S_") || packetName.StartsWith("s_"))
+                clientRegister += string.Format(PacketFormat.managerRegisterFormat, packetName) + Environment.NewLine + "\t";
+            else
+                serverRegister += string.Format(PacketFormat.managerRegisterFormat, packetName) + Environment.NewLine + "\t";
         }
 
         // {1} 멤버 변수들
