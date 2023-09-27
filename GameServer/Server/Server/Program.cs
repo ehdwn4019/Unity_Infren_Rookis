@@ -14,6 +14,13 @@ namespace Server
     class Program
     {
         static Listener _listener = new Listener();
+        public static GameRoom Room = new GameRoom();
+
+        static void FlushRoom()
+        {
+            Room.Push(() => Room.Flush());
+            JobTimer.Instance.Push(FlushRoom, 250);
+        }
 
         static void Main(string[] args)
         {
@@ -45,18 +52,19 @@ namespace Server
             // DNS >> Domain Name System 
             // www.kdj.com >> 도메인 등록, IP가 아닌 string 값으로 관리, IP를 적어넣으면 하드코딩 
 
-            ServerPacketManager.Instance.Register();
-
             string host = Dns.GetHostName();
             IPHostEntry ipHost = Dns.GetHostEntry(host);
             IPAddress ipAddr = ipHost.AddressList[0]; // google 같이 많이 접속하는 사이트는 여러개의 IP를 가지고 있다. 그래서 list로 받음 
             IPEndPoint endPoint = new IPEndPoint(ipAddr, 7777);
 
-            _listener.Init(endPoint, () => { return new ClientSession(); });
+            _listener.Init(endPoint, () => { return SessionManager.Instance.Generate(); });
+            Console.WriteLine("Listening...");
+
+            JobTimer.Instance.Push(FlushRoom);
 
             while (true)
             {
-                //임시로 서버 계속 실행시키기 위한 무한루프 
+                JobTimer.Instance.Flush();
             }
         }
     }

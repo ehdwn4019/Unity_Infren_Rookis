@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Server;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -30,6 +31,19 @@ namespace ServerCore.Packet
             {
                 Console.WriteLine($"Skill({skill.id})({skill.level})({skill.duration})");
             }
+        }
+
+        public static void ChatHandler(PacketSession session, IPacket packet)
+        {
+            PlayerInfoReq chatPacket = packet as PlayerInfoReq;
+            ClientSession clientSession = session as ClientSession;
+
+            if (clientSession.Room == null)
+                return;
+
+            GameRoom room = clientSession.Room;
+
+            room.Push(() => room.Broadcast(clientSession, chatPacket.chat));
         }
     }
 }

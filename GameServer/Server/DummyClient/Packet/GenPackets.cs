@@ -24,6 +24,7 @@ namespace DummyClient
     {
         public long playerId;
         public string name;
+        public string chat;
 
         public struct SkillInfo
         {

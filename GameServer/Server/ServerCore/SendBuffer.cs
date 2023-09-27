@@ -12,7 +12,7 @@ namespace ServerCore
         //ThreadLocal : 전역에서 사용 가능하나 나의 스레드에서만 사용가능하게 함 
         public static ThreadLocal<SendBuffer> CurrentBuffer = new ThreadLocal<SendBuffer>(() => { return null; });
 
-        public static int ChunkSize { get; set; } = 4096 * 100;
+        public static int ChunkSize { get; set; } = 65535 * 100;
 
         public static ArraySegment<byte> Open(int reserveSize)
         {

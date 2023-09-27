@@ -21,17 +21,14 @@ using System.Collections.Generic;
 class PacketManager
 {{
     #region Singleton
-    static PacketManager _instance;
-    public static PacketManager Instance
-    {{
-        get
-        {{
-            if (_instance == null)
-                _instance = new PacketManager();
-            return _instance;
-        }}
-    }}
+    static ServerPacketManager _instance = new ServerPacketManager();
+    public static ServerPacketManager Instance {{ get {{ return _instance; }} }}
     #endregion
+
+    ServerPacketManager()
+    {{
+        Register();
+    }}
 
     Dictionary<ushort, Action<PacketSession, ArraySegment<byte>>> _onRecv = new Dictionary<ushort, Action<PacketSession, ArraySegment<byte>>>();
     Dictionary<ushort, Action<PacketSession, IPacket>> _handler = new Dictionary<ushort, Action<PacketSession, IPacket>>();

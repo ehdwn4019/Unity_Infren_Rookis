@@ -11,12 +11,35 @@ namespace DummyClient.Packet
     {
         public static void PlayerInfoReqHandler(PacketSession session, IPacket packet)
         {
+            PlayerInfoReq p = packet as PlayerInfoReq;
 
+            Console.WriteLine($"PlayerInfoReq: {p.playerId} {p.name}");
+
+            foreach (PlayerInfoReq.SkillInfo skill in p.skills)
+            {
+                Console.WriteLine($"Skill({skill.id})({skill.level})({skill.duration})");
+            }
         }
 
         public static void TestHandler(PacketSession session, IPacket packet)
         {
+            PlayerInfoReq p = packet as PlayerInfoReq;
 
+            Console.WriteLine($"PlayerInfoReq: {p.playerId} {p.name}");
+
+            foreach (PlayerInfoReq.SkillInfo skill in p.skills)
+            {
+                Console.WriteLine($"Skill({skill.id})({skill.level})({skill.duration})");
+            }
+        }
+
+        public static void ChatHandler(PacketSession session, IPacket packet)
+        {
+            PlayerInfoReq chatPacket = packet as PlayerInfoReq;
+            ServerSession serverSession = session as ServerSession;
+
+            //if(chatPacket.playerId == 1)
+            //Console.WriteLine(chatPacket.chat);
         }
     }
 }
