@@ -41,5 +41,29 @@ namespace DummyClient.Packet
             //if(chatPacket.playerId == 1)
             //Console.WriteLine(chatPacket.chat);
         }
+
+        public static void BroadcastEnterGameHandler(PacketSession session, IPacket packet)
+        {
+            //PlayerInfoReq.PlayerPosInfo pkt = packet as PlayerInfoReq.PlayerPosInfo;
+            ServerSession serverSession = session as ServerSession;
+        }
+
+        public static void BroadcastLeaveGameHandler(PacketSession session, IPacket packet)
+        {
+            //PlayerInfoReq.PlayerPosInfo pkt = packet as PlayerInfoReq.PlayerPosInfo;
+            ServerSession serverSession = session as ServerSession;
+        }
+
+        public static void PlayerListHandler(PacketSession session, IPacket packet)
+        {
+            //PlayerInfoReq.PlayerPosInfo pkt = packet as PlayerInfoReq.PlayerPosInfo;
+            ServerSession serverSession = session as ServerSession;
+        }
+
+        public static void BroadcastMoveHandler(PacketSession session, IPacket packet)
+        {
+            //PlayerInfoReq.PlayerPosInfo pkt = packet as PlayerInfoReq.PlayerPosInfo;
+            ServerSession serverSession = session as ServerSession;
+        }
     }
 }

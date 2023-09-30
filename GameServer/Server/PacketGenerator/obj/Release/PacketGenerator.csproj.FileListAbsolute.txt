@@ -1,7 +1,7 @@
-C:\Users\USER\Desktop\Unity_Infren_Rookis\GameServer\Server\PacketGenerator\bin\Release\PacketGenerator.exe.config
-C:\Users\USER\Desktop\Unity_Infren_Rookis\GameServer\Server\PacketGenerator\bin\Release\PacketGenerator.exe
-C:\Users\USER\Desktop\Unity_Infren_Rookis\GameServer\Server\PacketGenerator\bin\Release\PacketGenerator.pdb
 C:\Users\USER\Desktop\Unity_Infren_Rookis\GameServer\Server\PacketGenerator\obj\Release\PacketGenerator.csproj.AssemblyReference.cache
 C:\Users\USER\Desktop\Unity_Infren_Rookis\GameServer\Server\PacketGenerator\obj\Release\PacketGenerator.csproj.CoreCompileInputs.cache
 C:\Users\USER\Desktop\Unity_Infren_Rookis\GameServer\Server\PacketGenerator\obj\Release\PacketGenerator.exe
 C:\Users\USER\Desktop\Unity_Infren_Rookis\GameServer\Server\PacketGenerator\obj\Release\PacketGenerator.pdb
+C:\Users\USER\Desktop\Unity_Infren_Rookis\GameServer\Server\PacketGenerator\bin\PacketGenerator.exe.config
+C:\Users\USER\Desktop\Unity_Infren_Rookis\GameServer\Server\PacketGenerator\bin\PacketGenerator.exe
+C:\Users\USER\Desktop\Unity_Infren_Rookis\GameServer\Server\PacketGenerator\bin\PacketGenerator.pdb

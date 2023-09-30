@@ -26,6 +26,16 @@ namespace DummyClient
         public string name;
         public string chat;
 
+        [Obsolete("Test 데이터 이기 떄문에 실사용불가")]
+        public sealed class PlayerPosInfo
+        {
+            public bool isSelf;
+            public int playerId;
+            public float posX;
+            public float posY;
+            public float posZ;
+        }
+
         public struct SkillInfo
         {
             public int id;
