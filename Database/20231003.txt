@@ -1,0 +1,17 @@
+Part5: 데이터베이스
+
+- DATETIME
+- CASE
+- 집계 함수
+- 연습 문제
+- GROUP BY
+- INSERT DELETE UPDATE
+- SUBQUERY
+- 데이터베이스 작성
+- 정규화
+- INDEX
+- UNION
+- JOIN
+- TRANSACTION
+- 변수와 흐름 제어
+- 윈도우 함수
